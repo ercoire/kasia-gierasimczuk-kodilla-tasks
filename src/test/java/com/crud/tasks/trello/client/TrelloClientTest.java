@@ -1,10 +1,7 @@
 package com.crud.tasks.trello.client;
 
 import com.crud.tasks.config.TrelloConfig;
-import com.crud.tasks.domain.CreatedTrelloCardDto;
-import com.crud.tasks.domain.TrelloBadgeDto;
-import com.crud.tasks.domain.TrelloBoardDto;
-import com.crud.tasks.domain.TrelloCardDto;
+import com.crud.tasks.domain.*;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -81,7 +78,7 @@ class TrelloClientTest {
                 "1",
                 "Test task",
                 "http://test.com",
-                new TrelloBadgeDto()
+                new TrelloBadgeDto(1, new TrelloAttachmentDto(new TrelloDto(1, 1)))
         );
         when(restTemplate.postForObject(uri, null, CreatedTrelloCardDto.class)).thenReturn(createdTrelloCardDto);
 
@@ -89,9 +86,14 @@ class TrelloClientTest {
         CreatedTrelloCardDto newCard = trelloClient.createNewCard(trelloCardDto);
 
         //Then
-        assertEquals("1", newCard.getId());
-        assertEquals("Test task", newCard.getName());
-        assertEquals("http://test.com", newCard.getShortUrl());
+        assertEquals(createdTrelloCardDto.getId(), newCard.getId());
+        assertEquals(createdTrelloCardDto.getName(), newCard.getName());
+        assertEquals(createdTrelloCardDto.getShortUrl(), newCard.getShortUrl());
+        assertEquals(createdTrelloCardDto.getBadges().getVotes(), newCard.getBadges().getVotes());
+        assertEquals(createdTrelloCardDto.getBadges().getAttachment().getTrello().getBoard(),
+                newCard.getBadges().getAttachment().getTrello().getBoard());
+        assertEquals(createdTrelloCardDto.getBadges().getAttachment().getTrello().getCard(),
+                newCard.getBadges().getAttachment().getTrello().getCard());
     }
 
     @Test
