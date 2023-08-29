@@ -28,4 +28,6 @@ public class TrelloBoardDto {
     public String getId() {
         return id;
     }
+
+
 }
