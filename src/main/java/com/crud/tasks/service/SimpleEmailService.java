@@ -5,13 +5,10 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.MailException;
-import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.mail.javamail.MimeMessagePreparator;
 import org.springframework.stereotype.Service;
-
-import java.util.Optional;
 
 @Slf4j
 @Service
@@ -40,18 +37,19 @@ public class SimpleEmailService {
             messageHelper.setTo(mail.getMailTo());
             messageHelper.setSubject(mail.getSubject());
             messageHelper.setText(mailCreatorService.buildTrelloCardEmail(mail.getMessage()), true);
+            messageHelper.setText(mailCreatorService.dailyTaskReviewEmail(mail.getMessage()), true);  //32.3
         };
     }
 
 
-  private static SimpleMailMessage createMailMessage(final Mail mail) {
-        SimpleMailMessage mailMessage = new SimpleMailMessage();
-        mailMessage.setTo(mail.getMailTo());
-        mailMessage.setSubject(mail.getSubject());
-        mailMessage.setText(mail.getMessage());
-        if(Optional.ofNullable(mail.getToCc()).isPresent()){
-            mailMessage.setCc(mail.getToCc());
-        }
-        return mailMessage;
-    }
+//  private static SimpleMailMessage createMailMessage(final Mail mail) {
+//        SimpleMailMessage mailMessage = new SimpleMailMessage();
+//        mailMessage.setTo(mail.getMailTo());
+//        mailMessage.setSubject(mail.getSubject());
+//        mailMessage.setText(mail.getMessage());
+//        if(Optional.ofNullable(mail.getToCc()).isPresent()){
+//            mailMessage.setCc(mail.getToCc());
+//        }
+//        return mailMessage;
+//    }
 }

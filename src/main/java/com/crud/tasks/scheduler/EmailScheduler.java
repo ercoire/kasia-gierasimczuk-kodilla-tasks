@@ -18,15 +18,15 @@ public class EmailScheduler {
 
     private static final String SUBJECT = "Tasks: Daily review";
 
-    @Scheduled(cron = "0 0 10 * * *")
-    // @Scheduled(fixedDelay = 10000)
+   @Scheduled(cron = "0 10 10 * * *")
+  // @Scheduled(fixedDelay = 10000)
     public void sendInformationEmail() {
         long size = taskRepository.count();
         String message;
         if (size > 1) {
-            message = "Currently in database you got: " + size + " tasks";
+            message = "Currently in database you've got: " + size + " tasks";
         } else {
-            message = "Currently in database you got 1 task";
+            message = "Currently in database you've got 1 task";
         }
         simpleEmailService.send(
                 new Mail(
